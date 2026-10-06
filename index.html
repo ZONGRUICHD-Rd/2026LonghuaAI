@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>递归魔法森林</title>
+<meta name="description" content="一颗种子 · 一个函数 · 一整片森林 —— 用递归画出四季魔法树">
+<link rel="icon" href="素材/sprites/魔法种子.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+
+  <!-- 屏幕 1：封面 -->
+  <section class="screen show" id="cover">
+    <img class="bg" src="素材/backgrounds/背景_1封面.jpg" alt="">
+    <canvas id="fireflies" width="1920" height="1080"></canvas>
+    <img class="el float" src="素材/sprites/标题_递归魔法森林.png" style="left:310px;top:70px;width:1300px" alt="递归魔法森林">
+    <img class="el" src="素材/sprites/副标题.png" style="left:510px;top:390px;width:900px" alt="">
+    <img class="el bob" src="素材/sprites/递递_1普通.png" style="left:818px;top:470px;width:285px" alt="">
+    <img class="el btn" data-go="forest" src="素材/sprites/按钮_开始魔法.png" style="left:500px;top:840px;width:460px" alt="开始魔法">
+    <img class="el btn" data-go="class" src="素材/sprites/按钮_递归小课堂.png" style="left:960px;top:840px;width:460px" alt="递归小课堂">
+  </section>
+
+  <!-- 屏幕 2：森林 -->
+  <section class="screen" id="forest">
+    <img class="bg" id="bgA" src="素材/backgrounds/背景_2春.jpg" alt="">
+    <img class="bg" id="bgB" src="素材/backgrounds/背景_2春.jpg" alt="" style="opacity:0">
+    <canvas id="tree" width="1920" height="1080"></canvas>
+    <canvas id="fx" width="1920" height="1080"></canvas>
+
+    <img class="el" src="素材/sprites/标题_递归魔法森林.png" style="left:14px;top:6px;width:468px" alt="">
+    <img class="el btn" data-go="cover" src="素材/sprites/按钮_首页.png" style="left:470px;top:18px;width:188px" alt="首页">
+    <button class="el chip" id="soundBtn" style="left:668px;top:44px">🔊 声音开</button>
+
+    <img class="el btn season" data-season="spring" style="left:18px;top:150px;width:158px" alt="春天">
+    <img class="el btn season" data-season="summer" style="left:18px;top:322px;width:158px" alt="夏天">
+    <img class="el btn season" data-season="autumn" style="left:18px;top:494px;width:158px" alt="秋天">
+    <img class="el btn season" data-season="winter" style="left:18px;top:666px;width:158px" alt="冬天">
+
+    <img class="el" src="素材/sprites/魔法数据面板.png" style="left:1505px;top:8px;width:406px" alt="">
+    <div class="el val" id="vDepth" style="left:1700px;top:80px">8</div>
+    <div class="el val" id="vCount" style="left:1700px;top:135px">0</div>
+    <div class="el val" id="vAngle" style="left:1700px;top:190px">25°</div>
+    <div class="el val" id="vSeason" style="left:1700px;top:244px">春天</div>
+
+    <div class="el slider" style="left:1525px;top:346px">
+      <span>分叉角度</span>
+      <input type="range" id="angle" min="10" max="45" value="25">
+    </div>
+
+    <div class="el bubble" id="bubble" style="right:345px;top:470px"></div>
+    <img class="el bob" id="mascot" src="素材/sprites/递递_1普通.png" style="left:1590px;top:470px;width:266px" alt="递递">
+
+    <img class="el" id="seed" src="素材/sprites/魔法种子.png" style="left:925px;top:880px;width:70px" alt="">
+
+    <img class="el btn" data-act="grow"   src="素材/sprites/按钮_长大.png" style="left:200px;top:930px;width:133px" alt="长大">
+    <img class="el btn" data-act="shrink" src="素材/sprites/按钮_变小.png" style="left:328px;top:930px;width:133px" alt="变小">
+    <img class="el btn" data-act="wind"   src="素材/sprites/按钮_刮风.png" style="left:456px;top:930px;width:133px" alt="刮风">
+    <img class="el btn" data-act="snow"   src="素材/sprites/按钮_下雪.png" style="left:584px;top:930px;width:133px" alt="下雪">
+    <img class="el btn" data-act="reset"  src="素材/sprites/按钮_重来.png" style="left:712px;top:930px;width:133px" alt="重来">
+
+    <img class="el btn" id="mic" src="素材/sprites/麦克风_1等待.png" style="left:1660px;top:820px;width:255px" alt="点我说话">
+    <div class="el hint" style="left:1250px;top:1046px">键盘也能玩：1~4 换季节　↑↓ 长大变小　W 刮风　S 下雪　R 重来　空格 说话</div>
+  </section>
+
+  <!-- 屏幕 3：课堂 -->
+  <section class="screen" id="class">
+    <img class="bg" src="素材/backgrounds/背景_6课堂.jpg" alt="">
+    <img class="el" id="card" src="素材/sprites/课堂卡片_1什么是递归.png" style="left:210px;top:60px;width:1500px" alt="">
+    <img class="el bob" src="素材/sprites/递递_2施法.png" style="left:40px;top:800px;width:228px" alt="">
+    <img class="el btn" data-go="forest" src="素材/sprites/按钮_返回森林.png" style="left:300px;top:900px;width:342px" alt="返回森林">
+    <div class="el dots" id="dots" style="left:860px;top:960px"><i></i><i></i><i></i></div>
+    <img class="el btn" id="next" src="素材/sprites/按钮_下一页.png" style="left:1380px;top:900px;width:342px" alt="下一页">
+  </section>
+</div>
+
+<div id="rotate">📱 把手机横过来，森林会更大哦</div>
+<script src="app.js"></script>
+</body>
+</html>
