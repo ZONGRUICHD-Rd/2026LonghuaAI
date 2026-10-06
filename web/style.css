@@ -1,0 +1,56 @@
+@font-face { font-family: 'KuaiLe'; src: url('fonts/kuaile.woff2') format('woff2'); font-display: swap; }
+
+:root { --ink: #3a2a6a; --purple: #7a5cf0; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #160c33; }
+body { font-family: 'KuaiLe', 'PingFang SC', 'Microsoft YaHei', sans-serif; user-select: none; -webkit-user-select: none; }
+
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; }
+.screen { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .45s ease; }
+.screen.show { opacity: 1; pointer-events: auto; }
+.bg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transition: opacity .8s ease; }
+canvas { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+.el { position: absolute; }
+img.el { -webkit-user-drag: none; }
+
+.btn { cursor: pointer; transition: transform .15s ease, filter .15s ease; }
+.btn:hover { transform: scale(1.06); filter: brightness(1.06); }
+.btn:active { transform: scale(.92); }
+.btn.pop { animation: pop .35s ease; }
+@keyframes pop { 0% { transform: scale(1) } 40% { transform: scale(.88) } 100% { transform: scale(1) } }
+
+.float { animation: float 4s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-14px) } }
+.bob { animation: bob 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes bob { 50% { transform: translateY(-8px) rotate(-1.5deg) } }
+
+.val { font-size: 36px; color: var(--ink); line-height: 48px; transition: transform .2s; }
+.val.bump { animation: bump .4s ease; }
+@keyframes bump { 40% { transform: scale(1.35); color: #e8507a } }
+
+.chip { border: 4px solid #fff; border-radius: 999px; background: linear-gradient(#b39bff, #7a5cf0); color: #fff;
+  font: 30px 'KuaiLe', sans-serif; padding: 4px 22px; cursor: pointer; box-shadow: 0 6px 0 #4f35b5, 0 10px 18px rgba(40,10,80,.3); }
+.chip:active { transform: translateY(4px); box-shadow: 0 2px 0 #4f35b5; }
+
+.slider { width: 370px; display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.88); border: 5px solid #fff;
+  border-radius: 999px; padding: 8px 22px; box-shadow: 0 8px 0 rgba(90,60,180,.35), 0 12px 24px rgba(40,10,80,.25); }
+.slider span { font-size: 28px; color: #f07a1e; white-space: nowrap; }
+.slider input { flex: 1; -webkit-appearance: none; appearance: none; height: 14px; border-radius: 99px; background: linear-gradient(90deg, #ffd08a, #f07a1e); outline: none; }
+.slider input::-webkit-slider-thumb { -webkit-appearance: none; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 6px solid #f07a1e; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,.3); }
+.slider input::-moz-range-thumb { width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 6px solid #f07a1e; cursor: pointer; }
+
+.bubble { max-width: 420px; min-width: 200px; background: #fff; border-radius: 30px; padding: 20px 26px; font-size: 32px; line-height: 1.45;
+  color: var(--ink); border: 5px solid #b39bff; box-shadow: 0 10px 24px rgba(40,10,80,.28);
+  opacity: 0; transform: scale(.6) translateY(20px); transform-origin: 100% 70%; transition: opacity .25s, transform .3s cubic-bezier(.3,1.6,.5,1); }
+.bubble.show { opacity: 1; transform: none; }
+.bubble::after { content: ''; position: absolute; right: -30px; bottom: 34px; border: 16px solid transparent; border-left: 26px solid #b39bff; }
+.bubble b { color: #e8507a; }
+
+.hint { transform: translateX(-50%); font-size: 22px; color: rgba(255,255,255,.92); text-shadow: 0 2px 4px rgba(0,0,0,.45); white-space: nowrap; }
+
+.dots { display: flex; gap: 18px; }
+.dots i { width: 26px; height: 26px; border-radius: 50%; background: #e7cfa8; border: 4px solid #fff; box-shadow: 0 3px 6px rgba(0,0,0,.15); }
+.dots i.on { background: #ff8a3d; transform: scale(1.2); }
+
+#rotate { display: none; position: fixed; left: 0; right: 0; bottom: 16px; text-align: center; color: #fff; font-size: 16px; }
+@media (orientation: portrait) and (max-width: 700px) { #rotate { display: block; } }

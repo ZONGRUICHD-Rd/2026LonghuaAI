@@ -8,3 +8,12 @@
 - 🎨 `素材/`：背景（`backgrounds/`）和角色造型（`sprites/`），可以直接导入 Kitten
 - 🖼️ `预览图/`：做好以后的效果参考
 - 🛠️ `tools/`：生成素材用的脚本（`FONT_DIR=字体目录 node tools/build.js`，需要站酷快乐体 `kuaile.ttf` 和思源黑体 `noto500.woff2`）。参赛用不到这个文件夹。
+
+## 🌐 网页版
+
+在线玩：**https://zongruichd-rd.github.io/2026LonghuaAI/**
+
+- 源码在 `web/`，和 Kitten 版用的是同一个递归算法，另外加了生长动画、风吹摇摆、拖动角度实时变形
+- 语音魔法要用电脑上的 **Edge** 或 **Chrome**（国内网络推荐 Edge），点麦克风后允许使用麦克风
+- 键盘：1~4 换季节，↑↓ 长大/变小，W 刮风，S 下雪，R 重来，空格 说话
+- 更新网站：`tools/make_site.sh 输出目录`，再把输出目录的内容推到 `gh-pages` 分支
