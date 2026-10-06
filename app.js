@@ -1,5 +1,6 @@
 // 递归魔法森林 · 网页版
 // 树和雪花的画法与 Kitten 版《制作指南》里的积木完全一致，只是加了生长动画和风吹摇摆。
+// 网页版去掉了语音识别（国内浏览器大多用不了），只保留按钮、键盘和递递朗读。
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -259,48 +260,14 @@ function setCard(i) {
 }
 CARDS.forEach(n => { new Image().src = A(`sprites/${n}.png`); });   // 预加载
 
-// ---------- AI 语音 ----------
-const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-let listening = false;
-function listen() {
-  if (!SR) return say('这个浏览器听不懂话 😢<br>换成电脑上的 <b>Edge</b> 或 <b>Chrome</b> 试试，<br>也可以直接点按钮哦');
-  if (listening) return;
-  const r = new SR(); r.lang = 'zh-CN'; r.interimResults = false; r.maxAlternatives = 3;
-  listening = true; $('#mic').src = A('sprites/麦克风_2正在听.png');
-  speechSynthesis && speechSynthesis.cancel();
-  r.onresult = e => {
-    const text = [...e.results[0]].map(a => a.transcript).join(' ');
-    if (!command(text)) say(`我听到的是：“${e.results[0][0].transcript}”<br>试试说 <b>春天、长大、刮风、下雪</b>`);
-  };
-  r.onerror = e => say(e.error === 'not-allowed' ? '要先允许使用<b>麦克风</b>哦' :
-    e.error === 'no-speech' ? '我没听到声音，<br>再说一次吧～' : '网络有点问题，语音没识别出来，<br>可以先点按钮玩');
-  r.onend = () => { listening = false; $('#mic').src = A('sprites/麦克风_1等待.png'); };
-  r.start();
-}
-function command(text) {
-  const has = (...w) => w.some(x => text.includes(x));
-  if (has('春')) return setSeason('spring'), true;
-  if (has('夏')) return setSeason('summer'), true;
-  if (has('秋')) return setSeason('autumn'), true;
-  if (has('雪')) return act('snow'), true;
-  if (has('冬')) return setSeason('winter'), true;
-  if (has('长大', '变大', '大')) return act('grow'), true;
-  if (has('变小', '小')) return act('shrink'), true;
-  if (has('风')) return act('wind'), true;
-  if (has('重来', '重新', '再来')) return act('reset'), true;
-  if (has('魔法', '变')) return regrow(true), true;
-  return false;
-}
-
 // ---------- 事件绑定 ----------
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-go],[data-act],[data-season],#mic,#next');
+  const el = e.target.closest('[data-go],[data-act],[data-season],#next');
   if (!el) return;
   el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
   if (el.dataset.go) go(el.dataset.go);
   else if (el.dataset.act) act(el.dataset.act);
   else if (el.dataset.season) setSeason(el.dataset.season);
-  else if (el.id === 'mic') listen();
   else if (el.id === 'next') setCard(card + 1);
 });
 $('#angle').addEventListener('input', e => { state.angle = +e.target.value; bump($('#vAngle'), state.angle + '°'); });
@@ -314,7 +281,7 @@ addEventListener('keydown', e => {
   const k = e.key.toLowerCase();
   const map = { '1': () => setSeason('spring'), '2': () => setSeason('summer'), '3': () => setSeason('autumn'), '4': () => setSeason('winter'),
     arrowup: () => act('grow'), '+': () => act('grow'), '=': () => act('grow'), arrowdown: () => act('shrink'), '-': () => act('shrink'),
-    w: () => act('wind'), s: () => act('snow'), r: () => act('reset'), ' ': listen };
+    w: () => act('wind'), s: () => act('snow'), r: () => act('reset') };
   if (map[k]) { e.preventDefault(); map[k](); }
 });
 if (window.speechSynthesis) speechSynthesis.getVoices();
